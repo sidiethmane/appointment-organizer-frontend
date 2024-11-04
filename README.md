@@ -40,6 +40,7 @@
 ## Documentations for reference
    - [React](https://react.dev/learn)
    - [Next.js](https://nextjs.org/docs)
+   - [Flowbite](https://flowbite-react.com/docs/getting-started/introduction)
 
 ## Best practices
    - Use functional components over class components
