@@ -40,3 +40,7 @@
 ## Documentations for reference
    - [React](https://react.dev/learn)
    - [Next.js](https://nextjs.org/docs)
+
+## Best practices
+   - Use functional components over class components
+   - Follow the [Airbnb](https://airbnb.io/javascript/react/) style guide for writing code
