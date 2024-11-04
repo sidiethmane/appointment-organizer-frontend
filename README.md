@@ -1,4 +1,3 @@
-
 ## Prerequisites
    - [Node.js (v18.18 or later)](https://nodejs.org/en)
 
@@ -37,3 +36,7 @@
    npm run dev
    ```
    This will start the project on localhost. You can click on the URL available in the terminal to access the project in the browser.
+
+## Documentations for reference
+   - [React](https://react.dev/learn)
+   - [Next.js](https://nextjs.org/docs)
