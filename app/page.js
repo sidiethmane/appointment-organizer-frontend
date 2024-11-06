@@ -1,12 +1,11 @@
-import { Datepicker } from "flowbite-react";
-import { Button } from "flowbite-react";
+import { Button, Checkbox } from '@mui/material';
 
 export default function Home() {
   return (
     <div>
       Hello World!
-      <Datepicker inline />
-      <Button color="blue">click me </Button>
+      <Button variant="contained" color="success">click me</Button>
+        <Checkbox />
     </div>
   );
 }
