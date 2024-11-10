@@ -23,6 +23,10 @@ function UserDashboard() {
     router.push('/');
   };
 
+  const handleUserProfilClick = () => {
+    router.push('/userProfile');
+  };
+
   const handleLogoutCancel = () => {
     setOpenLogoutDialog(false);
   };
