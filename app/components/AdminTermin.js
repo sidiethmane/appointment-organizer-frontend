@@ -45,6 +45,11 @@ function AdminTermin() {
     router.push('/adminTermin');
   };
 
+
+  const handleAnouncements = () => {
+    router.push('/adminAnouncements');
+  };
+
   const handleViewChange = (event, newView) => {
     if (newView !== null) {
       setView(newView);
@@ -142,7 +147,7 @@ function AdminTermin() {
             </ListItemIcon>
             <ListItemText primary="Benachrichtigungen" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton onClick={handleAnouncements}>
             <ListItemIcon>
               <ReportProblem style={{ color: '#ccc' }} />
             </ListItemIcon>

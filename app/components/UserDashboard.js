@@ -18,10 +18,6 @@ function UserDashboard() {
     setOpenLogoutDialog(true);
   };
 
-  const handleUserProfilClick = () => {
-    router.push('/userProfile'); // Navigiert explizit zur Profilseite
-  };
-
   const handleLogoutConfirm = () => {
     setOpenLogoutDialog(false);
     router.push('/');

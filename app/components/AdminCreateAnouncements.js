@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField, Avatar, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import {
+  Box, Autocomplete, Typography, TextField, FormControlLabel,
+  Checkbox, Paper, Button, Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle, List, ListItemButton,
+  ListItemIcon, ListItemText
+} from "@mui/material";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import EventIcon from '@mui/icons-material/Event';
@@ -9,26 +15,14 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useRouter } from 'next/navigation';
-import { ReportProblem } from '@mui/icons-material';
+import ReportProblem from '@mui/icons-material/ReportProblem';
 
-function AdminProfile() {
+export default function AdminCreateAnnouncements() {
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
-  const [openSaveDialog, setOpenSaveDialog] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
   const router = useRouter();
 
   const handleLogoutClick = () => {
     setOpenLogoutDialog(true);
-  };
-
-  const handleLogoutConfirm = () => {
-    setOpenLogoutDialog(false);
-    router.push('/');
-  };
-
-  const handleLogoutCancel = () => {
-    setOpenLogoutDialog(false);
   };
 
   const handleProfileClick = () => {
@@ -39,31 +33,23 @@ function AdminProfile() {
     router.push('/adminTermin');
   };
 
+  const handleLogoutConfirm = () => {
+    setOpenLogoutDialog(false);
+    router.push('/');
+  };
 
   const handleAnouncements = () => {
     router.push('/adminAnouncements');
   };
 
-  const handleImageChange = (event) => {
-    setProfileImage(URL.createObjectURL(event.target.files[0]));
-  };
 
-  const handleSaveClick = () => {
-    setOpenSaveDialog(true);
-  };
-
-  const handleSaveConfirm = () => {
-    setOpenSaveDialog(false);
-    alert("Änderungen wurden gespeichert!");
-    // Hier kannst du die eigentliche Speichern-Funktion implementieren
-  };
-
-  const handleSaveCancel = () => {
-    setOpenSaveDialog(false);
+  const handleLogoutCancel = () => {
+    setOpenLogoutDialog(false);
   };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar */}
       <Box
         sx={{
           width: 250,
@@ -76,7 +62,7 @@ function AdminProfile() {
         }}
       >
         <List>
-          <ListItemButton onClick={() => router.push('/admin')}>
+          <ListItemButton>
             <ListItemIcon>
               <DashboardIcon style={{ color: '#ccc' }} />
             </ListItemIcon>
@@ -128,46 +114,90 @@ function AdminProfile() {
           </ListItemButton>
         </List>
       </Box>
-      
+
+      {/* Main Content */}
       <Box sx={{ flex: 1, backgroundColor: '#f5f5f5', padding: 3 }}>
-        <Typography variant="h4">Profil</Typography>
-        
-        {/* Profilbild und Ändern-Button */}
-        <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
-          <Avatar src={profileImage} sx={{ width: 100, height: 100, mr: 2 }} />
-          <Button 
-            variant="outlined" 
-            component="label" 
-            sx={{ color: '#333', borderColor: '#333' }}
-          >
-            Profilbild ändern
-            <input type="file" hidden onChange={handleImageChange} />
-          </Button>
-        </Box>
+        <Typography variant="h4" gutterBottom>
+      
+        </Typography>
 
-        {/* Persönliche Informationen */}
-        <Box component="form" sx={{ display: 'grid', gap: 2, width: '50%' }}>
-          <TextField label="Name" variant="outlined" fullWidth />
-          <TextField label="Vorname" variant="outlined" fullWidth />
-          <TextField label="Personalnummer" variant="outlined" fullWidth />
-          <TextField label="E-Mail" variant="outlined" fullWidth />
-          <TextField label="Telefonnummer" variant="outlined" fullWidth />
-        </Box>
-
-        {/* Änderungen speichern Button */}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-          <Button 
-            variant="contained" 
-            sx={{ backgroundColor: '#333', color: '#fff' }} 
-            onClick={handleSaveClick}
+        {/* Announcement Creation Form */}
+        <Box
+          component={Paper}
+          elevation={4}
+          sx={{
+            maxWidth: 800,
+            margin: "auto",
+            marginTop: 6,
+            padding: 2,
+            border: 3,
+            borderColor: "gray",
+            borderRadius: 3,
+            display: "flex",
+            flexDirection: "column",
+            bgcolor: "#ffffff",
+          }}
+        >
+          <Typography
+            variant="h5"
+            align="center"
+            fontWeight="bold"
+            color="blue"
+            gutterBottom
           >
-            Änderungen speichern
-          </Button>
+            Ankündigung Erstellen
+          </Typography>
+
+          <TextField
+            label="Ankündigung Title"
+            variant="outlined"
+            size="small"
+            fullWidth
+          />
+
+          <TextField
+            label="Ankündigung Body"
+            variant="outlined"
+            size="small"
+            fullWidth
+            multiline
+            rows={12}
+            sx={{ marginTop: 4 }}
+          />
+
+          <Typography variant="h6" fontWeight="bold">
+            Methode
+          </Typography>
+
+          <FormControlLabel control={<Checkbox />} label="Bei Anmeldung" />
+          <FormControlLabel control={<Checkbox />} label="E-Mail" />
+
+          {/* Buttons */}
+          <Box display="flex" justifyContent="end" mt={2} gap={2}>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ width: { xs: "100%", sm: "auto" } }}
+            >
+              Abbrechen
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              href="/admin/announcements"
+              sx={{ width: { xs: "100%", sm: "auto" } }}
+            >
+              Speichern
+            </Button>
+          </Box>
         </Box>
       </Box>
 
-      {/* Logout-Bestätigungsdialog */}
-      <Dialog open={openLogoutDialog} onClose={handleLogoutCancel}>
+      {/* Logout Confirmation Dialog */}
+      <Dialog
+        open={openLogoutDialog}
+        onClose={handleLogoutCancel}
+      >
         <DialogTitle>Abmelden</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -175,26 +205,14 @@ function AdminProfile() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogoutCancel} color="primary">Nein</Button>
-          <Button onClick={handleLogoutConfirm} color="primary" autoFocus>Ja</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Änderungen speichern Bestätigungsdialog */}
-      <Dialog open={openSaveDialog} onClose={handleSaveCancel}>
-        <DialogTitle>Änderungen speichern</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Möchten Sie die Änderungen übernehmen?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSaveCancel} color="primary">Nein</Button>
-          <Button onClick={handleSaveConfirm} color="primary" autoFocus>Ja</Button>
+          <Button onClick={handleLogoutCancel} color="primary">
+            Nein
+          </Button>
+          <Button onClick={handleLogoutConfirm} color="primary" autoFocus>
+            Ja
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
 }
-
-export default AdminProfile;
