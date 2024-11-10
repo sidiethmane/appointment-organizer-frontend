@@ -1,11 +1,5 @@
-import { Button, Checkbox } from '@mui/material';
+import AuthForm from '../app/components/AuthForm';
 
-export default function Home() {
-  return (
-    <div>
-      Hello World!
-      <Button variant="contained" color="success">click me</Button>
-        <Checkbox />
-    </div>
-  );
+export default function HomePage() {
+  return <AuthForm />;
 }
