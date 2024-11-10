@@ -9,10 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-      <AppRouterCacheProvider>
-        {children}
-      </AppRouterCacheProvider>
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    </head>
+    <body>
+    <AppRouterCacheProvider>
+        { children }
+    </AppRouterCacheProvider>
       </body>
     </html>
   );
