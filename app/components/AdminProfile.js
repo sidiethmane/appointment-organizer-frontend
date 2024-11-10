@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { sidebarItemsAdmin } from '@/app/lib/sidebar-items/admin';
+import SidebarList from '@/app/components/SidebarList';
 import {
     Box,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
     Dialog,
     DialogActions,
     DialogContent,
@@ -17,25 +16,6 @@ import {
     Avatar,
     Typography
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { sidebarItemsAdmin } from '@/app/lib/sidebar-items/admin';
-import Link from 'next/link';
-import Icon from '@mui/material/Icon';
-
-const SidebarList = ({ items }) => (
-    <List>
-        {items.map((item) => (
-            <Link key={item.title} href={item.url}>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <Icon sx={{ color: "#ccc" }}>{item.icon}</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary={item.title} />
-                </ListItemButton>
-            </Link>
-        ))}
-    </List>
-);
 
 function AdminProfile() {
     const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
