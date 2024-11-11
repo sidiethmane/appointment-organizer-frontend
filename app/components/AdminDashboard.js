@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import { Box, List, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Grid2 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import EventIcon from '@mui/icons-material/Event';
@@ -11,6 +11,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useRouter } from 'next/navigation';
 import { ReportProblem } from '@mui/icons-material';
+import { AdminDashboardWidget } from './AdminDashboardWidget';
+
 
 function AdminDashboard() {
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -27,21 +29,24 @@ function AdminDashboard() {
   const handleProfileClick = () => {
     router.push('/adminProfile');
   };
-
-  const handleTerminClick = () => {
-    router.push('/adminTermin');
-  };
-
-  const handleLogoutConfirm = () => {
-    setOpenLogoutDialog(false);
-    router.push('/');
-  };
-
-  const handleLogoutCancel = () => {
-    setOpenLogoutDialog(false);
-  };
-
+  
+    const handleTerminClick = () => {
+      router.push('/adminTermin');
+    };
+  
+    const handleLogoutConfirm = () => {
+      setOpenLogoutDialog(false);
+      router.push('/');
+    };
+    
+    const handleLogoutCancel = () => {
+      setOpenLogoutDialog(false);
+    };
+    
+    
+  
   return (
+    /* sidebar */
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <Box
         sx={{
@@ -107,8 +112,11 @@ function AdminDashboard() {
           </ListItemButton>
         </List>
       </Box>
+      
+     {/* Main Content */}
       <Box sx={{ flex: 1, backgroundColor: '#f5f5f5', padding: 3 }}>
         <h1>Willkommen im Admin-Dashboard</h1>
+        <AdminDashboardWidget/>
       </Box>
 
       {/* Logout-Bestätigungsdialog */}
