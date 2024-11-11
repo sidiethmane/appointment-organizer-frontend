@@ -1,7 +1,24 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, ToggleButtonGroup, ToggleButton, Typography, Grid, Paper } from '@mui/material';
+import {
+	Box,
+	List,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Button,
+	ToggleButtonGroup,
+	ToggleButton,
+	Typography,
+	Grid,
+	Paper,
+} from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import EventIcon from '@mui/icons-material/Event';
@@ -18,231 +35,309 @@ import 'react-calendar/dist/Calendar.css';
 const Calendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 function AdminTermin() {
-  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
-  const [openEventDialog, setOpenEventDialog] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [view, setView] = useState("month"); // "day" für Wochenansicht, "month" für Monatsansicht
-  const router = useRouter();
+	const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
+	const [openEventDialog, setOpenEventDialog] = useState(false);
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [view, setView] = useState('month'); // "day" für Wochenansicht, "month" für Monatsansicht
+	const router = useRouter();
 
-  const handleLogoutClick = () => {
-    setOpenLogoutDialog(true);
-  };
+	const handleLogoutClick = () => {
+		setOpenLogoutDialog(true);
+	};
 
-  const handleLogoutConfirm = () => {
-    setOpenLogoutDialog(false);
-    router.push('/');
-  };
+	const handleLogoutConfirm = () => {
+		setOpenLogoutDialog(false);
+		router.push('/');
+	};
 
-  const handleLogoutCancel = () => {
-    setOpenLogoutDialog(false);
-  };
+	const handleLogoutCancel = () => {
+		setOpenLogoutDialog(false);
+	};
 
-  const handleProfileClick = () => {
-    router.push('/adminProfile');
-  };
+	const handleProfileClick = () => {
+		router.push('/adminProfile');
+	};
 
-  const handleTerminClick = () => {
-    router.push('/adminTermin');
-  };
+	const handleTerminClick = () => {
+		router.push('/adminTermin');
+	};
 
+	const handleAnouncements = () => {
+		router.push('/adminAnouncements');
+	};
 
-  const handleAnouncements = () => {
-    router.push('/adminAnouncements');
-  };
+	const handleViewChange = (event, newView) => {
+		if (newView !== null) {
+			setView(newView);
+		}
+	};
 
-  const handleViewChange = (event, newView) => {
-    if (newView !== null) {
-      setView(newView);
-    }
-  };
+	const handleDownloadICS = () => {
+		// Logik zum Erstellen und Herunterladen der .ics-Datei hinzufügen
+		alert('ICS-Datei wird heruntergeladen.');
+	};
 
-  const handleDownloadICS = () => {
-    // Logik zum Erstellen und Herunterladen der .ics-Datei hinzufügen
-    alert("ICS-Datei wird heruntergeladen.");
-  };
+	const handleDownloadPDF = () => {
+		// Logik zum Erstellen und Herunterladen der PDF-Datei hinzufügen
+		alert('PDF-Datei wird heruntergeladen.');
+	};
 
-  const handleDownloadPDF = () => {
-    // Logik zum Erstellen und Herunterladen der PDF-Datei hinzufügen
-    alert("PDF-Datei wird heruntergeladen.");
-  };
+	const handleDateClick = (date) => {
+		setSelectedDate(date);
+		setOpenEventDialog(true);
+	};
 
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    setOpenEventDialog(true);
-  };
+	const handleCloseEventDialog = () => {
+		setOpenEventDialog(false);
+	};
 
-  const handleCloseEventDialog = () => {
-    setOpenEventDialog(false);
-  };
+	const renderWeekView = () => {
+		// Beispiel-Daten für Termine; diese sollten normalerweise aus einer Datenquelle geladen werden
+		const exampleEvents = [
+			{ day: 'Montag', time: '10:00', title: 'Projektbesprechung' },
+			{ day: 'Dienstag', time: '14:00', title: 'Meeting mit Kunden' },
+			{ day: 'Donnerstag', time: '09:00', title: 'Schulung' },
+			{ day: 'Freitag', time: '15:00', title: 'Team-Event' },
+		];
 
-  const renderWeekView = () => {
-    // Beispiel-Daten für Termine; diese sollten normalerweise aus einer Datenquelle geladen werden
-    const exampleEvents = [
-      { day: 'Montag', time: '10:00', title: 'Projektbesprechung' },
-      { day: 'Dienstag', time: '14:00', title: 'Meeting mit Kunden' },
-      { day: 'Donnerstag', time: '09:00', title: 'Schulung' },
-      { day: 'Freitag', time: '15:00', title: 'Team-Event' },
-    ];
+		const daysOfWeek = [
+			'Montag',
+			'Dienstag',
+			'Mittwoch',
+			'Donnerstag',
+			'Freitag',
+			'Samstag',
+			'Sonntag',
+		];
 
-    const daysOfWeek = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+		return (
+			<Grid container spacing={2} justifyContent="center">
+				{daysOfWeek.map((day) => (
+					<Grid item xs={12} sm={6} md={4} lg={3} key={day}>
+						<Paper
+							elevation={3}
+							sx={{
+								padding: 2,
+								height: '200px',
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'space-between',
+							}}
+						>
+							<Typography variant="h6" sx={{ marginBottom: 1 }}>
+								{day}
+							</Typography>
+							<Box sx={{ flexGrow: 1 }}>
+								{exampleEvents
+									.filter((event) => event.day === day)
+									.map((event, index) => (
+										<Box
+											key={index}
+											sx={{ marginBottom: 1 }}
+										>
+											<Typography variant="body1">
+												{event.time}
+											</Typography>
+											<Typography variant="body2">
+												{event.title}
+											</Typography>
+										</Box>
+									))}
+							</Box>
+						</Paper>
+					</Grid>
+				))}
+			</Grid>
+		);
+	};
 
-    return (
-      <Grid container spacing={2} justifyContent="center">
-        {daysOfWeek.map((day) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={day}>
-            <Paper elevation={3} sx={{ padding: 2, height: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <Typography variant="h6" sx={{ marginBottom: 1 }}>{day}</Typography>
-              <Box sx={{ flexGrow: 1 }}>
-                {exampleEvents
-                  .filter(event => event.day === day)
-                  .map((event, index) => (
-                    <Box key={index} sx={{ marginBottom: 1 }}>
-                      <Typography variant="body1">{event.time}</Typography>
-                      <Typography variant="body2">{event.title}</Typography>
-                    </Box>
-                  ))}
-              </Box>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-    );
-  };
+	return (
+		<Box sx={{ display: 'flex', height: '100vh' }}>
+			<Box
+				sx={{
+					width: 250,
+					backgroundColor: '#333',
+					color: '#ccc',
+					paddingTop: 2,
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+				}}
+			>
+				<List>
+					<ListItemButton>
+						<ListItemIcon>
+							<DashboardIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Dashboard" />
+					</ListItemButton>
+					<ListItemButton>
+						<ListItemIcon>
+							<GroupIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Benutzerverwaltung" />
+					</ListItemButton>
+					<ListItemButton onClick={handleTerminClick}>
+						<ListItemIcon>
+							<EventIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Terminmanagement" />
+					</ListItemButton>
+					<ListItemButton>
+						<ListItemIcon>
+							<NotificationsIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Benachrichtigungen" />
+					</ListItemButton>
+					<ListItemButton onClick={handleAnouncements}>
+						<ListItemIcon>
+							<ReportProblem style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Ankündigungen" />
+					</ListItemButton>
+				</List>
+				<List>
+					<ListItemButton onClick={handleProfileClick}>
+						<ListItemIcon>
+							<AccountCircleIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Profil" />
+					</ListItemButton>
+					<ListItemButton>
+						<ListItemIcon>
+							<SettingsIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Einstellungen" />
+					</ListItemButton>
+					<ListItemButton onClick={handleLogoutClick}>
+						<ListItemIcon>
+							<ExitToAppIcon style={{ color: '#ccc' }} />
+						</ListItemIcon>
+						<ListItemText primary="Logout" />
+					</ListItemButton>
+				</List>
+			</Box>
 
-  return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
-      <Box
-        sx={{
-          width: 250,
-          backgroundColor: '#333',
-          color: '#ccc',
-          paddingTop: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
-        <List>
-          <ListItemButton>
-            <ListItemIcon>
-              <DashboardIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <GroupIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Benutzerverwaltung" />
-          </ListItemButton>
-          <ListItemButton onClick={handleTerminClick}>
-            <ListItemIcon>
-              <EventIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Terminmanagement" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <NotificationsIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Benachrichtigungen" />
-          </ListItemButton>
-          <ListItemButton onClick={handleAnouncements}>
-            <ListItemIcon>
-              <ReportProblem style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Ankündigungen" />
-          </ListItemButton>
-        </List>
-        <List>
-          <ListItemButton onClick={handleProfileClick}>
-            <ListItemIcon>
-              <AccountCircleIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Profil" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <SettingsIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Einstellungen" />
-          </ListItemButton>
-          <ListItemButton onClick={handleLogoutClick}>
-            <ListItemIcon>
-              <ExitToAppIcon style={{ color: '#ccc' }} />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-        </List>
-      </Box>
-      
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#f5f5f5', padding: 3 }}>
-        <Typography variant="h4" gutterBottom align="center">Willkommen im Admin-Terminmanagement</Typography>
-        
-        {/* Toggle for View Selection */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
-          <ToggleButtonGroup
-            value={view}
-            exclusive
-            onChange={handleViewChange}
-          >
-            <ToggleButton value="day">Tagesansicht</ToggleButton>
-            <ToggleButton value="month">Monatsansicht</ToggleButton>
-            <ToggleButton value="year">Jahresansicht</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+			<Box
+				sx={{
+					flex: 1,
+					display: 'flex',
+					flexDirection: 'column',
+					backgroundColor: '#f5f5f5',
+					padding: 3,
+				}}
+			>
+				<Typography variant="h4" gutterBottom align="center">
+					Willkommen im Admin-Terminmanagement
+				</Typography>
 
-        {/* Calendar Component oder Wochenansicht */}
-        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {view === 'day' ? (
-            renderWeekView()
-          ) : (
-            <Calendar
-              view={view}
-              onViewChange={setView}
-              onClickDay={handleDateClick} // Öffnet den Dialog beim Klicken auf einen Tag
-            />
-          )}
-        </Box>
+				{/* Toggle for View Selection */}
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						mb: 3,
+					}}
+				>
+					<ToggleButtonGroup
+						value={view}
+						exclusive
+						onChange={handleViewChange}
+					>
+						<ToggleButton value="day">Tagesansicht</ToggleButton>
+						<ToggleButton value="month">Monatsansicht</ToggleButton>
+						<ToggleButton value="year">Jahresansicht</ToggleButton>
+					</ToggleButtonGroup>
+				</Box>
 
-        {/* Download Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-          <Button onClick={handleDownloadICS} variant="contained" color="primary" sx={{ mr: 2 }}>
-            Liste als .ics herunterladen
-          </Button>
-          <Button onClick={handleDownloadPDF} variant="contained" color="secondary">
-            Liste als PDF herunterladen
-          </Button>
-        </Box>
-      </Box>
+				{/* Calendar Component oder Wochenansicht */}
+				<Box
+					sx={{
+						flex: 1,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					{view === 'day' ? (
+						renderWeekView()
+					) : (
+						<Calendar
+							view={view}
+							onViewChange={setView}
+							onClickDay={handleDateClick} // Öffnet den Dialog beim Klicken auf einen Tag
+						/>
+					)}
+				</Box>
 
-      {/* Logout Confirmation Dialog */}
-      <Dialog open={openLogoutDialog} onClose={handleLogoutCancel}>
-        <DialogTitle>Abmelden</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Möchten Sie sich wirklich abmelden?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleLogoutCancel} color="primary">Nein</Button>
-          <Button onClick={handleLogoutConfirm} color="primary" autoFocus>Ja</Button>
-        </DialogActions>
-      </Dialog>
+				{/* Download Buttons */}
+				<Box
+					sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}
+				>
+					<Button
+						onClick={handleDownloadICS}
+						variant="contained"
+						color="primary"
+						sx={{ mr: 2 }}
+					>
+						Liste als .ics herunterladen
+					</Button>
+					<Button
+						onClick={handleDownloadPDF}
+						variant="contained"
+						color="secondary"
+					>
+						Liste als PDF herunterladen
+					</Button>
+				</Box>
+			</Box>
 
-      {/* Event Information Dialog */}
-      <Dialog open={openEventDialog} onClose={handleCloseEventDialog}>
-        <DialogTitle>Termine am {selectedDate.toLocaleDateString()}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">Hier könnten die Informationen zu den Terminen an diesem Tag stehen.</Typography>
-          <Typography variant="body2" sx={{ mt: 2 }}>
-            Beispiel: Meeting um 10:00 Uhr, Projektbesprechung um 14:00 Uhr, etc.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEventDialog} color="primary">Schließen</Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
+			{/* Logout Confirmation Dialog */}
+			<Dialog open={openLogoutDialog} onClose={handleLogoutCancel}>
+				<DialogTitle>Abmelden</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						Möchten Sie sich wirklich abmelden?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleLogoutCancel} color="primary">
+						Nein
+					</Button>
+					<Button
+						onClick={handleLogoutConfirm}
+						color="primary"
+						autoFocus
+					>
+						Ja
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			{/* Event Information Dialog */}
+			<Dialog open={openEventDialog} onClose={handleCloseEventDialog}>
+				<DialogTitle>
+					Termine am {selectedDate.toLocaleDateString()}
+				</DialogTitle>
+				<DialogContent>
+					<Typography variant="body1">
+						Hier könnten die Informationen zu den Terminen an diesem
+						Tag stehen.
+					</Typography>
+					<Typography variant="body2" sx={{ mt: 2 }}>
+						Beispiel: Meeting um 10:00 Uhr, Projektbesprechung um
+						14:00 Uhr, etc.
+					</Typography>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseEventDialog} color="primary">
+						Schließen
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</Box>
+	);
 }
 
 export default AdminTermin;
