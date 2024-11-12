@@ -30,10 +30,10 @@ function UserDashboard() {
   const handleLogoutCancel = () => {
       setOpenLogoutDialog(false);
   };
-  {/*coming soon*/}
-   /* const getInvitesList = () => {
+  
+    const getInvitesList = () => {
     router.push('/invites');
-   };*/
+   };
     
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -191,7 +191,7 @@ function UserDashboard() {
 
             {/* Invitation List Button */}
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2 }}>
-              <Button /*onClick={getInvitesList}*/ variant="contained" color="primary">
+              <Button onClick={getInvitesList} variant="contained" color="primary">
                 Einladungsliste
               </Button>
             </Grid>
