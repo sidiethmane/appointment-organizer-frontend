@@ -31,7 +31,11 @@ function UserDashboard() {
   const newEvent = () => {
     router.push('/event');
   };
-
+  
+  const myEvent = () => {
+    router.push('/myevent');
+  };
+  
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       {/* Sidebar */}
@@ -113,6 +117,7 @@ function UserDashboard() {
           <Button
             variant="contained"
             size="large"
+            onClick={myEvent}
             sx={{ backgroundColor: 'orange', color: '#fff', '&:hover': { backgroundColor: 'darkorange' } }}
             
           >
