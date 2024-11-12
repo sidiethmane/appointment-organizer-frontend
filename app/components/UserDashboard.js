@@ -23,16 +23,18 @@ function UserDashboard() {
     router.push('/');
   };
 
-  const handleUserProfilClick = () => {
-    router.push('/userProfile');
-  };
-
   const handleLogoutCancel = () => {
     setOpenLogoutDialog(false);
   };
 
+  {/* coming soon */}
+  /*const newEvent = () => {
+    router.push('/event');
+  };*/
+
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar */}
       <Box
         sx={{
           width: 250,
@@ -61,11 +63,11 @@ function UserDashboard() {
             <ListItemIcon>
               <EventNoteIcon style={{ color: '#ccc' }} />
             </ListItemIcon>
-            <ListItemText primary="Meine Teilnahmen" />
+            <ListItemText primary="Meine Veranstaltungen als Teilnehmer" />
           </ListItemButton>
         </List>
         <List>
-          <ListItemButton onClick={handleUserProfilClick}>
+          <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon style={{ color: '#ccc' }} />
             </ListItemIcon>
@@ -85,15 +87,42 @@ function UserDashboard() {
           </ListItemButton>
         </List>
       </Box>
-      <Box sx={{ flex: 1, backgroundColor: '#f5f5f5', padding: 3 }}>
-        <h1>Willkommen auf der Benutzerseite</h1>
+
+      {/* Main Content */}
+      <Box
+        sx={{
+          flex: 1,
+          backgroundColor: '#f5f5f5',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 3,
+        }}
+      >
+        <h1>Willkommen ... (User) !</h1>
+        <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
+          <Button
+            variant="contained"
+            size="large"
+            /*onClick={newEvent}*/
+            sx={{ backgroundColor: 'green', color: '#fff', '&:hover': { backgroundColor: 'darkgreen' } }}
+          >
+            Neue Veranstaltung
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ backgroundColor: 'orange', color: '#fff', '&:hover': { backgroundColor: 'darkorange' } }}
+            
+          >
+            Meine Veranstaltungen
+          </Button>
+        </Box>
       </Box>
 
-      {/* Logout-Bestätigungsdialog */}
-      <Dialog
-        open={openLogoutDialog}
-        onClose={handleLogoutCancel}
-      >
+      {/* Logout Confirmation Dialog */}
+      <Dialog open={openLogoutDialog} onClose={handleLogoutCancel}>
         <DialogTitle>Abmelden</DialogTitle>
         <DialogContent>
           <DialogContentText>
