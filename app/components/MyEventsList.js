@@ -9,32 +9,24 @@ import {
   Typography,
   Link,
   Paper,
-  Badge,
-  Grid,
   Alert,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  IconButton,
+  Badge
 } from '@mui/material';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventNoteIcon from '@mui/icons-material/EventNote';
-import EditIcon from '@mui/icons-material/Edit';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import EventIcon from '@mui/icons-material/Event';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useRouter } from 'next/navigation';
 
-function EventCard({ count }) {
+function EventItem({ title, date, time, count }) {
   let color = 'default';
   if (count > 20) color = 'green';
   else if (count > 10) color = 'orange';
@@ -43,69 +35,66 @@ function EventCard({ count }) {
   return (
     <Paper
       sx={{
-        position: 'relative',
-        width: 350, // Increased width
-        height: 350, // Increased height
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        padding: 2,
+        marginBottom: 2,
         border: '1px solid #ddd',
       }}
       elevation={3}
     >
-      <Box sx={{ position: 'absolute', top: 8, left: 30 }}>
-        <Badge badgeContent={<EditIcon fontSize="small" />} color="primary" />
+      <Box sx={{ flex: 1 }}>
+        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+          {title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {time}
+        </Typography>
       </Box>
-      <Box sx={{ position: 'absolute', top: 8, right: 30 }}>
-        <Badge badgeContent={<DeleteIcon fontSize="small" />} color="error" />
-      </Box>
-      <Box sx={{ position: 'absolute', bottom: 8, right: 30 }}>
-        <Badge
-          badgeContent={count}
-          color={color}
-          showZero
-          sx={{
-            '& .MuiBadge-badge': {
-              backgroundColor:
-                color === 'green' ? '#4caf50' : color === 'orange' ? '#ffa726' : '#f44336',
-              color: '#fff',
-            },
-          }}
-        />
-      </Box>
+
+      {/* Count Badge */}
+      <Badge
+        badgeContent={count}
+        color={color}
+        showZero
+        sx={{
+          marginRight: 2,
+          '& .MuiBadge-badge': {
+            backgroundColor:
+              color === 'green' ? '#4caf50' : color === 'orange' ? '#ffa726' : '#f44336',
+            color: '#fff',
+          },
+        }}
+      />
+      {/* Edit Icon */}
+      <IconButton color="primary" sx={{ marginRight: 1 }}>
+        <EditIcon />
+      </IconButton>
+      {/* Delete Icon */}
+      <IconButton color="error">
+        <DeleteIcon />
+      </IconButton>
     </Paper>
   );
 }
 
 function UserDashboard() {
-  const [view, setView] = useState('grid');
-  const [openLogoutDialog, setOpenLogoutDialog] = useState(false); // State for logout dialog
-  const router = useRouter();
-
+  const [view, setView] = useState('list');
   const handleViewChange = (event, nextView) => {
     if (nextView !== null) {
       setView(nextView);
     }
   };
 
-  const handleLogoutClick = () => {
-    setOpenLogoutDialog(true);
-  };
+  // Sample data for events
+  const eventsToday = [
+    { title: 'Veranstaltung X', time: '8:00 - 12:00', count: 60 },
+    { title: 'Veranstaltung Y', time: '14:00 - 20:00', count: 20 },
+  ];
 
-  const handleLogoutConfirm = () => {
-    setOpenLogoutDialog(false);
-    // Navigate to the homepage or perform logout actions here
-  };
-
-  const handleLogoutCancel = () => {
-    setOpenLogoutDialog(false);
-  };
-
-  const eventList = () => {
-    router.push('/myeventlist');
-  };
-
-  const eventCounts = [60, 20, 30, 10, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const eventsTomorrow = [
+    { title: 'Veranstaltung Z', time: '8:00 - 12:00', count: 20 },
+  ];
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -154,7 +143,7 @@ function UserDashboard() {
             </ListItemIcon>
             <ListItemText primary="Einstellungen" />
           </ListItemButton>
-          <ListItemButton onClick={handleLogoutClick}>
+          <ListItemButton>
             <ListItemIcon>
               <ExitToAppIcon style={{ color: '#ccc' }} />
             </ListItemIcon>
@@ -164,14 +153,7 @@ function UserDashboard() {
       </Box>
 
       {/* Main Content */}
-      <Box
-        sx={{
-          flex: 1,
-          backgroundColor: '#f5f5f5',
-          padding: 3,
-          overflowY: 'auto',
-        }}
-      >
+      <Box sx={{ flex: 1, padding: 3, backgroundColor: '#f5f5f5' }}>
         {/* Alert Message */}
         <Alert severity="warning" sx={{ marginBottom: 3 }}>
           Die Veranstaltung XU ist gelöscht
@@ -180,6 +162,7 @@ function UserDashboard() {
         {/* Header */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
           <Typography variant="h5">Meine Veranstaltungen:</Typography>
+
           <Button variant="outlined" size="large">Neue Veranstaltung</Button>
         </Box>
 
@@ -193,40 +176,40 @@ function UserDashboard() {
             size="small"
           >
             <ToggleButton value="grid">Grid</ToggleButton>
-            <ToggleButton onClick={eventList} value="list">List</ToggleButton>
+            <ToggleButton value="list">List</ToggleButton>
           </ToggleButtonGroup>
+
           <Link href="#" underline="hover">
             .ics Datei erstellen
           </Link>
         </Box>
 
-        {/* Grid of Events */}
-        <Grid container spacing={2}>
-          {eventCounts.map((count, index) => (
-            <Grid item key={index} xs={3}> {/* Adjusted grid size */}
-              <EventCard count={count} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+        {/* Event List for Today */}
+        <Typography variant="subtitle1" sx={{ marginBottom: 1 }}>
+          Heute, 26.10.2024
+        </Typography>
+        {eventsToday.map((event, index) => (
+          <EventItem
+            key={index}
+            title={event.title}
+            time={event.time}
+            count={event.count}
+          />
+        ))}
 
-      {/* Logout Confirmation Dialog */}
-      <Dialog open={openLogoutDialog} onClose={handleLogoutCancel}>
-        <DialogTitle>Abmelden</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Möchten Sie sich wirklich abmelden?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleLogoutCancel} color="primary">
-            Nein
-          </Button>
-          <Button onClick={handleLogoutConfirm} color="primary" autoFocus>
-            Ja
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* Event List for Tomorrow */}
+        <Typography variant="subtitle1" sx={{ marginTop: 3, marginBottom: 1 }}>
+          Morgen, 27.10.2024
+        </Typography>
+        {eventsTomorrow.map((event, index) => (
+          <EventItem
+            key={index}
+            title={event.title}
+            time={event.time}
+            count={event.count}
+          />
+        ))}
+      </Box>
     </Box>
   );
 }
