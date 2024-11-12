@@ -27,10 +27,10 @@ function UserDashboard() {
     setOpenLogoutDialog(false);
   };
 
-  {/* coming soon */}
-  /*const newEvent = () => {
+
+  const newEvent = () => {
     router.push('/event');
-  };*/
+  };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -105,7 +105,7 @@ function UserDashboard() {
           <Button
             variant="contained"
             size="large"
-            /*onClick={newEvent}*/
+            onClick={newEvent}
             sx={{ backgroundColor: 'green', color: '#fff', '&:hover': { backgroundColor: 'darkgreen' } }}
           >
             Neue Veranstaltung
